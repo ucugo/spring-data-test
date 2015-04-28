@@ -27,7 +27,14 @@ public class PersonRepositoryTest {
 
         List<Person> persons = personRepository.findByFirstName("Barry");
 
+        Person person = new Person();
+
+        Person  person1 = personRepository.save(person);
+
+        Assert.assertNotNull(person);
+
         Assert.assertNotNull(persons);
+        Assert.assertEquals(persons.size(),0);
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by uchegc01 on 28/04/2015.
  */
-public interface PersonRepository extends JpaRepository<Person,Integer> {
+public interface PersonRepository extends JpaRepository<Person,Serializable> {
 
     public List<Person> findByFirstName(String firstName);
 }

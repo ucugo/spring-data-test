@@ -1,9 +1,15 @@
 package util;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repositories.Person;
 
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +30,8 @@ public class SqlPersonGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(SqlPersonGenerator.class);
 
 
-    private static void generatePersonSQL(){
+    @Test
+    public void generatePersonSQL(){
 
 
         Random random = new Random();
@@ -40,11 +47,27 @@ public class SqlPersonGenerator {
             builder.append(";");
             builder.append("\n");
         }
-        System.out.println(builder.toString());
+        LOGGER.info(builder.toString());
 
     }
 
-    public static void main(String args[]){
-        SqlPersonGenerator.generatePersonSQL();
+    private void writeToFile(String content, String fileName)throws Exception{
+        URL resource = Thread.currentThread().getContextClassLoader().getResource(fileName);
+        if (resource == null) {
+            throw new FileNotFoundException("Could not find file in classpath: " + fileName);
+        }
+        String path = resource.getPath();
+
+        // This is for windows machines
+        // it solves the issue of System path formats
+        if(System.getProperty("os.name").startsWith("Windows")){
+            path = resource.getPath().replaceFirst("/", "");
+        }
+        Path filePath = Paths.get(path);
+
+
+        byte[] encoded = Files.readAllBytes(filePath);
     }
+
+
 }

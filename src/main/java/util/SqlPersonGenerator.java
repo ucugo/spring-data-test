@@ -5,10 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repositories.Person;
 
-import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ public class SqlPersonGenerator {
 
 
     @Test
-    public void generatePersonSQL(){
+    public void generatePersonSQL()throws Exception{
 
 
         Random random = new Random();
@@ -47,6 +45,8 @@ public class SqlPersonGenerator {
             builder.append(";");
             builder.append("\n");
         }
+
+        writeToFile(builder.toString(),"data/person.sql");
         LOGGER.info(builder.toString());
 
     }
@@ -63,10 +63,12 @@ public class SqlPersonGenerator {
         if(System.getProperty("os.name").startsWith("Windows")){
             path = resource.getPath().replaceFirst("/", "");
         }
+
+
+
         Path filePath = Paths.get(path);
-
-
-        byte[] encoded = Files.readAllBytes(filePath);
+        byte[] encoded = content.getBytes();
+        Files.write(filePath,encoded);
     }
 
 
